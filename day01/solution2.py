@@ -7,7 +7,10 @@ from utils.read import read_file_iter
 # Use the following line instead if the input is a single line
 # def solver(input: str) -> str:
 def solver(input: Iterable[str]) -> str:
-    return "the other answer"
+    depths = [int(d) for d in input]
+    return len(
+        [d for d in range(len(depths) - 3) if sum(depths[d: d + 3]) < sum(depths[d + 1: d + 4])]
+    )
 
 
 if __name__ == "__main__":
