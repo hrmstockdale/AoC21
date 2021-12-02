@@ -1,20 +1,27 @@
 from pathlib import Path
 from typing import Iterable
+from operator import add, sub
 
 from utils.read import read_file_iter
 
 
+MAPPING = {"forward": add, "down": add, "up": sub}
+
 # Use the following line instead if the input is a single line
 # def solver(input: str) -> str:
 def solver(input: Iterable[str]) -> str:
-    depths = [int(d) for d in input]
-    return len(
-        [
-            d
-            for d in range(len(depths) - 3)
-            if sum(depths[d : d + 3]) < sum(depths[d + 1 : d + 4])
-        ]
-    )
+    aim = 0
+    depth = 0
+    horizontal = 0
+    for i in input:
+        instruction, _, num = i.partition(" ")
+        num = int(num)
+        if instruction == "forward":
+            horizontal = MAPPING[instruction](horizontal, num)
+            depth += aim * num
+        else:
+            aim = MAPPING[instruction](aim, num)
+    return depth * horizontal
 
 
 if __name__ == "__main__":
